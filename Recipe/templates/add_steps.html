@@ -1,0 +1,33 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="{% static 'app/css/style.css' %}">
+</head>
+<body>
+
+<h2>Add Steps</h2>
+
+<form method="post">
+    {% csrf_token %}
+
+    {{ ingredients|json_script:"ingredients-data" }}
+
+    <div id="steps-container"></div>
+
+    <button type="button" onclick="addStep(ingredientsData)">
+        + Add Step
+    </button>
+
+    <button type="submit">Save Steps</button>
+</form>
+
+<script>
+    const ingredientsData = JSON.parse(
+        document.getElementById('ingredients-data').textContent
+    );
+</script>
+
+<script src="{% static '/js/steps.js' %}"></script>
+</body>
+</html>

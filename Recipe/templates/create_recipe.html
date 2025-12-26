@@ -1,0 +1,17 @@
+<h2>Create Recipe</h2>
+
+<form method="post">
+    {% csrf_token %}
+    
+    <label>Recipe Name</label>
+    {{ form.title }}
+
+    <label>Description</label>
+    {{ form.description }}
+
+    <label>Serves</label>
+    {{ form.serves }}
+
+    <button type="submit">Save & Add Ingredients</button>
+</form>
+

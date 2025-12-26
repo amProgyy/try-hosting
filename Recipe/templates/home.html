@@ -1,0 +1,45 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cook Book</title>
+    <link rel="stylesheet" href="{% static 'app/css/style.css' %}">
+</head>
+<body>
+
+<!-- HEADER -->
+<header style="display:flex; justify-content:space-between; align-items:center;">
+    <h2>🍳 Cook Book</h2>
+
+    <div>
+        {% if user.is_authenticated %}
+            <span>Welcome, {{ user.username }}</span> |
+            <a href="{% url 'logout' %}">Logout</a>
+        {% else %}
+            <a href="{% url 'login' %}">Login</a> |
+            <a href="{% url 'signup' %}">Signup</a>
+        {% endif %}
+    </div>
+</header>
+
+<hr>
+
+<!-- RECIPES -->
+<h3>Latest Recipes</h3>
+
+<div class="recipe-grid">
+    {% for recipe in recipes %}
+        <div class="recipe-card">
+            <h4>{{ recipe.title }}</h4>
+            <p>{{ recipe.description|truncatechars:80 }}</p>
+            <p><small>Serves: {{ recipe.serves }}</small></p>
+            <a href="{% url 'recipe_detail' recipe.id %}">View Recipe</a>
+        </div>
+    {% empty %}
+        <p>No recipes yet.</p>
+    {% endfor %}
+</div>
+
+</body>
+</html>

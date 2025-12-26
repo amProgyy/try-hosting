@@ -1,0 +1,25 @@
+{% load static %}
+<html>
+<body>
+<h2>Add Ingredients</h2>
+
+<form method="post">
+    {% csrf_token %}
+
+    <div id="ingredient-container">
+        <div class="ingredient-row">
+            <input type="text" name="name" placeholder="Ingredient name" required>
+            <input type="number" step="0.1" name="quantity" placeholder="Qty" required>
+            <input type="text" name="unit" placeholder="Unit" required>
+        </div>
+    </div>
+
+    <button type="button" onclick="addIngredient()">+ Add Ingredient</button>
+    <br><br>
+    <button type="submit">Save Ingredients</button>
+</form>
+
+<script src="{% static '/js/ingredients.js' %}"></script>
+</body>
+</html>
+
