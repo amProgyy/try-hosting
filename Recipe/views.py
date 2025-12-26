@@ -204,4 +204,7 @@ def suggest_recipes(request):
         "available": available,
         "suggested": suggested
     })
+def hello(request):
+    request.GET.get('hello')
+    print(hello)
 
