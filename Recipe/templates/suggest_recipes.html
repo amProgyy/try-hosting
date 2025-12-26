@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title %}Suggested Recipes{% endblock %}
+{% block content %}
+
+<h1>Suggest Recipes by Available Ingredients</h1>
+
+<form method="GET" action="">
+    <label>Enter your ingredients (comma-separated):</label>
+    <input type="text" name="ingredients" value="{{ available }}">
+    <button type="submit">Find Recipes</button>
+</form>
+
+{% if suggested %}
+    <h2>Suggested Recipes:</h2>
+    <ul>
+        {% for s in suggested %}
+            <li>
+                <a href="{% url 'recipe_detail' s.recipe.id %}">{{ s.recipe.title }}</a> -
+                {{ s.match_percentage }}% match
+                {% if s.missing_ingredients %}
+                    (Missing: {{ s.missing_ingredients|join:", " }})
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+{% elif available %}
+    <p>No matching recipes found.</p>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,50 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Cookbook{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <script src="{% static 'js/recipe_scale.js' %}"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header style="display:flex; justify-content:space-between; align-items:center; padding:10px; background:#f5f5f5; border-bottom:1px solid #ddd;">
+        <div class="logo">
+            <a href="{% url 'home' %}" style="text-decoration:none; font-weight:bold; font-size:1.2rem;">Cookbook</a>
+        </div>
+
+        <!-- Search -->
+        <div>
+                <input
+            type="text"
+            id="live-search"
+            placeholder="Search recipes or ingredients..."
+            autocomplete="off">
+
+            <ul id="search-results"></ul>
+        </div>
+
+        <!-- User actions -->
+        <div class="user-actions">
+            {% if user.is_authenticated %}
+                Hi, {{ user.username }} | <a href="{% url 'logout' %}">Logout</a>
+            {% else %}
+                <a href="{% url 'login' %}">Login</a> | <a href="{% url 'signup' %}">Sign Up</a>
+            {% endif %}
+        </div>
+    </header>
+
+    <!-- Main content -->
+    <main style="padding:20px;">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer style="margin-top:40px; padding:10px; text-align:center; border-top:1px solid #ddd;">
+        &copy; {{ now|date:"Y" }} Cookbook. All rights reserved.
+    </footer>
+
+    <script src="{% static '/js/searchBar.js' %}"></script>
+</body>
+</html>

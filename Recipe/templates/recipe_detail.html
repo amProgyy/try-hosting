@@ -1,7 +1,29 @@
 {% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ recipe.title }}</title>
+    <script src="{% static 'js/recipe_scale.js' %}"></script>
+    <style>
+        #loading { display: none; color: green; font-weight: bold; }
+        .random-recipes { display: flex; gap: 1rem; margin-top: 1rem; }
+        .random-recipe { border: 1px solid #ccc; padding: 0.5rem; }
+    </style>
+</head>
+<body>
 
+<!-- HEADER -->
 <header style="display:flex; justify-content:space-between; align-items:center;">
-    <h2>🍳 Cook Book</h2>
+    <a href="{% url 'home' %}" style="text-decoration:none; font-weight:bold; font-size:30px;">🍳 Cook Book</a>
+
+    <input
+    type="text"
+    id="live-search"
+    placeholder="Search recipes or ingredients..."
+    autocomplete="off">
+
+    <ul id="search-results"></ul>
+
 
     <div>
         {% if user.is_authenticated %}
@@ -13,51 +35,54 @@
         {% endif %}
     </div>
 </header>
-
-<h1>{{ recipe.title }}</h1>
-<p>{{ recipe.description }}</p>
-<p><strong>Serves:</strong> {{ recipe.serves }}</p>
-
 <hr>
 
-<h3>Ingredients</h3>
-<ul>
-    {% for ing in ingredients %}
-        <li>{{ ing.quantity }} {{ ing.unit }} {{ ing.name }}</li>
-    {% endfor %}
-</ul>
+    <h1>{{ recipe.title }}</h1>
+    <p>{{ recipe.description }}</p>
 
-<hr>
+    <!-- Servings input -->
+    <label for="serves-input">Serves:</label>
+    <input
+        id="serves-input"
+        type="number"
+        min="1"
+        value="{{ recipe.serves }}"
+    />
+    <span id="loading">Scaling...</span>
 
-<h3>Steps</h3>
-<ol>
-    {% for step in steps %}
-        <li>
-            {{ step.instruction }}
-            {% if step.ingredients.all %}
-                <br>
-                <small>
-                    Uses:
-                    {% for ing in step.ingredients.all %}
-                        {{ ing.name }}{% if not forloop.last %}, {% endif %}
-                    {% endfor %}
-                </small>
-            {% endif %}
-        </li>
-    {% endfor %}
-</ol>
+    <!-- Ingredients list -->
+    <h2>Ingredients</h2>
+    <ul id="ingredient-list">
+        {% for ing in ingredients %}
+            <li class="ingredient" data-ingredient="{{ ing.name }}">
+                <span class="name">{{ ing.name }}</span> :
+                <span class="qty">{{ ing.quantity }}</span>
+                <span class="unit">{{ ing.unit }}</span>
+            </li>
+        {% endfor %}
+    </ul>
 
-<hr>
+    <!-- Steps -->
+    <h2>Steps</h2>
+    <ol>
+        {% for step in steps %}
+           <p> {{step.step_no}}.{{ step.instruction }}</p>
+        {% endfor %}
+    </ol>
 
-<h3>You may also like</h3>
-<div class="recipe-grid">
-    {% for r in random_recipes %}
-        <div class="recipe-card">
-            <h4>{{ r.title }}</h4>
-            <p>{{ r.description|truncatechars:60 }}</p>
-            <a href="{% url 'recipe_detail' r.id %}">View</a>
-        </div>
-    {% empty %}
-        <p>No other recipes yet.</p>
-    {% endfor %}
-</div>
+    <!-- Random recipes -->
+    <h2>Try other recipes</h2>
+    <div class="random-recipes">
+        {% for r in random_recipes %}
+            <div class="random-recipe">
+                <a href="{% url 'recipe_detail' r.id %}">{{ r.title }}</a>
+            </div>
+        {% endfor %}
+    </div>
+
+    <script src="{% static '/js/recipe_scale.js' %}"></script>
+
+<script src="{% static '/js/searchBar.js' %}"></script>
+
+</body>
+</html>
