@@ -12,6 +12,15 @@
 <header style="display:flex; justify-content:space-between; align-items:center;">
     <h2>🍳 Cook Book</h2>
 
+    <input
+    type="text"
+    id="live-search"
+    placeholder="Search recipes or ingredients..."
+    autocomplete="off">
+
+    <ul id="search-results"></ul>
+
+
     <div>
         {% if user.is_authenticated %}
             <span>Welcome, {{ user.username }}</span> |
@@ -24,6 +33,24 @@
 </header>
 
 <hr>
+
+<div>
+{% if user.is_authenticated %}
+    <a href="{% url 'create_recipe' %}" 
+       style="display:inline-block; padding:10px 15px; background:#28a745; color:white; border-radius:4px; text-decoration:none; margin-bottom:15px;">
+        + Create Recipe
+    </a>
+{% else %}
+    <p><a href="{% url 'login' %}">Login</a> to create your own recipes.</p>
+{% endif %}
+</div>
+
+<div style="margin:15px 0;">
+    <a href="{% url 'suggest_recipes' %}" 
+       class="btn-suggest">
+        🔍 Suggest Recipes by Ingredients
+    </a>
+</div>
 
 <!-- RECIPES -->
 <h3>Latest Recipes</h3>
@@ -40,6 +67,6 @@
         <p>No recipes yet.</p>
     {% endfor %}
 </div>
-
+<script src="{% static '/js/searchBar.js' %}"></script>
 </body>
 </html>
